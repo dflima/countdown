@@ -68,8 +68,8 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Configure your database
 config :countdown, Countdown.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "auth0",
+  password: "phoenixelixir",
   database: "countdown_dev",
   hostname: "localhost",
   pool_size: 10
