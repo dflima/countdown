@@ -44,7 +44,7 @@ defmodule Countdown.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:ueberauth, "~> 0.4"},
-      {:ueberauth_auth0, "~> 0.3"},
+      {:ueberauth_auth0, "~> 2.0"},
       {:poison, "~> 5.0"}
     ]
   end
