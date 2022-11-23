@@ -20,10 +20,35 @@ jobs:
 
     name: Build and test
     runs-on: ubuntu-latest
-
+    
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Elixir
-      uses: MilesChou/elixir-action@v0.0.1
-      with:
-        args: mix test
+      - uses: actions/checkout@v3
+      - name: Setup Erlang and Elixir
+        uses: erlef/setup-beam@v1.13.1
+        with:
+          elixir-version: "1.14.1"
+          otp-version: "25.1.2"
+
+      - name: Mix and build cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+
+      - name: Get dependencies
+        run: mix deps.get
+
+      - name: Code analyzers
+        run: |
+          mix format --check-formatted
+          mix compile --warnings-as-errors
+
+      - name: Tests & Coverage
+        uses: josecfreittas/elixir-coverage-feedback-action@v0.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          coverage_threshold: 80
+          # coverage_tool: excoveralls
